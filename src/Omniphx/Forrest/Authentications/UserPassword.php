@@ -20,6 +20,17 @@ class UserPassword extends BaseAuthentication implements UserPasswordInterface
         $this->storeResources();
     }
 
+
+    /**
+     * Return current auth session information.
+     *
+     * @return mixed $response
+     */
+    public function token()
+    {
+        return $this->tokenRepo->get();
+    }
+
     /**
      * Refresh authentication token by re-authenticating.
      *
@@ -66,7 +77,7 @@ class UserPassword extends BaseAuthentication implements UserPasswordInterface
     public function revoke()
     {
         $accessToken = $this->tokenRepo->get();
-        $url = $this->credentials['loginURL'].'/services/oauth2/revoke';
+        $url = $this->credentials['loginURL'] . '/services/oauth2/revoke';
 
         $options['headers']['content-type'] = 'application/x-www-form-urlencoded';
         $options['form_params']['token'] = $accessToken;
